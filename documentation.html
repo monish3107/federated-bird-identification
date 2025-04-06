@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - Bird Image Classification</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.light-mode {
+            background-color: #f4f7fc;
+            color: #333;
+        }
+
+        .container {
+            background-color: #333;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        .container.light-mode {
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #fff;
+            margin-bottom: 20px;
+            transition: color 0.3s;
+        }
+
+        h1.light-mode {
+            color: #333;
+        }
+
+        input[type="file"] {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #666;
+            border-radius: 4px;
+            width: 100%;
+            background-color: #444;
+            color: #fff;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+        }
+
+        input[type="file"].light-mode {
+            border: 1px solid #ddd;
+            background-color: #fafafa;
+            color: #333;
+        }
+
+        /* Buttons */
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Result Text */
+        p {
+            font-size: 18px;
+            margin-top: 20px;
+            color: #ddd;
+            transition: color 0.3s;
+        }
+
+        p.light-mode {
+            color: #333;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .prediction {
+            color: green;
+        }
+
+        /* Image Preview */
+        #image-preview {
+            margin-top: 20px;
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Toggle Button Styles */
+        .toggle-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .toggle-button {
+            background-color: #555;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            font-size: 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-button:hover {
+            background-color: #777;
+        }
+
+        .toggle-button.light-mode {
+            background-color: #ddd;
+            color: #333;
+        }
+
+        /* Progress Bar Styles */
+        #progress-bar-container {
+            width: 100%;
+            background-color: #ddd;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            display: none;
+        }
+
+        #progress-bar {
+            height: 10px;
+            background-color: #007bff;
+            width: 0%;
+            border-radius: 4px;
+            transition: width 0.3s ease-in-out;
+        }
+
+        #confidence {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #bbb;
+        }
+
+        #confidence.light-mode {
+            color: #555;
+        }
+
+        /* Navigation Styles */
+        nav {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(51, 51, 51, 0.8);
+            padding: 10px 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin: 0 15px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #007BFF;
+        }
+
+        /* Footer Styles */
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(51, 51, 51, 0.8);
+            color: #fff;
+            text-align: center;
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="documentation.html">Documentation</a></li>
+        </ul>
+        <button class="toggle-button" id="toggleButton">Switch to Light Mode</button>
+    </nav>
+
+    <div class="container">
+        <h1>Documentation</h1>
+        <h2>API Endpoints</h2>
+        <ul>
+            <li>
+                <strong>POST /predict</strong><br> Classifies an image. Requires an image file in the request body.
+            </li>
+        </ul>
+        <h2>Training Details</h2>
+        <ul>
+            <li>Base Model: MobileNetV2</li>
+            <li>Optimizer: Adam (learning rate=0.001)</li>
+            <li>Loss: sparse_categorical_crossentropy</li>
+        </ul>
+    </div>
+
+    <script>
+        const toggleButton = document.getElementById('toggleButton');
+        const body = document.body;
+        const container = document.querySelector('.container');
+        const heading = document.querySelector('h1');
+
+        // Function to toggle light mode
+        function toggleLightMode() {
+            body.classList.toggle('light-mode');
+            container.classList.toggle('light-mode');
+            heading.classList.toggle('light-mode');
+
+            if (body.classList.contains('light-mode')) {
+                toggleButton.textContent = 'Switch to Dark Mode';
+            } else {
+                toggleButton.textContent = 'Switch to Light Mode';
+            }
+        }
+
+        // Initially set the site to dark mode
+        toggleLightMode();
+        toggleLightMode();
+
+        // Add event listener to the toggle button
+        toggleButton.addEventListener('click', toggleLightMode);
+    </script>
+
+</body>
+
+</html>
